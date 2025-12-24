@@ -32,102 +32,114 @@ export default function StudentDashboard() {
   if (loading) return <p>Loading events...</p>;
 
   return (
-    <div>
-      <h2>🎓 Student Dashboard</h2>
+    <div style={{ maxWidth: "900px", margin: "0 auto" }}>
+      <h2 style={{ marginBottom: "24px" }}>🎓 Student Dashboard</h2>
 
       {/* INTERESTS */}
-      <StudentInterests studentId={studentId} onSaved={fetchRecommendations} />
+      <div style={cardStyle}>
+        <h3 style={{ marginBottom: "12px" }}>🎯 Your Interests</h3>
+        <StudentInterests
+          studentId={studentId}
+          onSaved={fetchRecommendations}
+        />
+      </div>
 
-      {/* RECOMMENDATIONS */}
+      {/* RECOMMENDED */}
       {recommended.length > 0 && (
-        <>
-          <h3>🔮 Recommended for You</h3>
-
-          {recommended.some((r) => r.score === null) && (
-            <p style={{ color: "#666" }}>
-              Select interests to get better recommendations 👆
-            </p>
-          )}
+        <div style={{ ...cardStyle, marginTop: "32px" }}>
+          <h3 style={{ marginBottom: "12px" }}>🔮 Recommended for You</h3>
 
           {recommended.map((rec) => (
-            <div
-              key={rec.event_id}
-              style={{
-                border: "1px solid #c7d2fe",
-                background: "#f9fbff",
-                padding: "12px",
-                borderRadius: "8px",
-                marginBottom: "10px",
-              }}
-            >
+            <div key={rec.event_id} style={innerCardStyle}>
               <b>{rec.title}</b>
             </div>
           ))}
-
-          <hr />
-        </>
+        </div>
       )}
 
       {/* ALL EVENTS */}
-      <h3>📅 All Events</h3>
+      <h3 style={{ margin: "36px 0 16px" }}>📅 All Events</h3>
 
       {events.map((event) => (
-        <div
-          key={event.event_id}
-          style={{
-            border: "1px solid #ddd",
-            borderRadius: "8px",
-            padding: "16px",
-            marginBottom: "14px",
-          }}
-        >
-          <h3>{event.title}</h3>
+        <div key={event.event_id} style={cardStyle}>
+          <h4 style={{ marginBottom: "6px" }}>{event.title}</h4>
 
-          <p>
+          <div style={{ fontSize: "14px", color: "#cbd5f5" }}>
             📍 {event.location || "TBA"} <br />
             📅 {event.event_date}
-          </p>
+          </div>
 
           {/* TAGS */}
-          <div
-            style={{
-              display: "flex",
-              flexWrap: "wrap",
-              gap: "8px",
-              marginTop: "8px",
-            }}
-          >
+          <div style={tagContainerStyle}>
             {event.tags.map((tag) => (
-              <span
-                key={tag}
-                style={{
-                  padding: "4px 10px",
-                  borderRadius: "999px",
-                  fontSize: "12px",
-                  background: "#eef2ff",
-                  color: "#3730a3",
-                  border: "1px solid #c7d2fe",
-                }}
-              >
+              <span key={tag} style={tagStyle}>
                 {tag}
               </span>
             ))}
           </div>
 
-          {/* REGISTER LINK */}
+          {/* GLASS REGISTER BUTTON */}
           {event.registration_link && (
-            <div style={{ marginTop: "10px" }}>
-              <a
-                href={event.registration_link}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                📝 Register Here
-              </a>
-            </div>
+            <a
+              href={event.registration_link}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={glassButtonStyle}
+            >
+              📝 Register
+            </a>
           )}
         </div>
       ))}
     </div>
   );
 }
+
+/* ================= STYLES ================= */
+
+const cardStyle = {
+  background: "rgba(255,255,255,0.04)",
+  borderRadius: "14px",
+  padding: "22px",
+  border: "1px solid rgba(255,255,255,0.12)",
+  marginBottom: "16px",
+};
+
+const innerCardStyle = {
+  background: "rgba(255,255,255,0.06)",
+  borderRadius: "10px",
+  padding: "12px",
+  marginBottom: "10px",
+};
+
+const tagContainerStyle = {
+  display: "flex",
+  flexWrap: "wrap",
+  gap: "8px",
+  marginTop: "10px",
+};
+
+const tagStyle = {
+  padding: "4px 12px",
+  borderRadius: "999px",
+  fontSize: "12px",
+  background: "rgba(255,255,255,0.1)",
+  border: "1px solid rgba(255,255,255,0.15)",
+  color: "#e5e7eb",
+  fontWeight: 500,
+};
+
+/* 🔮 GLASS BUTTON */
+const glassButtonStyle = {
+  display: "inline-block",
+  marginTop: "14px",
+  padding: "10px 20px",
+  borderRadius: "12px",
+  background: "rgba(79,70,229,0.15)",
+  backdropFilter: "blur(10px)",
+  border: "1px solid rgba(79,70,229,0.4)",
+  color: "#c7d2fe",
+  fontWeight: 600,
+  textDecoration: "none",
+  cursor: "pointer",
+};

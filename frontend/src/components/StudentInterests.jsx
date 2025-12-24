@@ -32,10 +32,11 @@ export default function StudentInterests({ studentId, onSaved }) {
   }
 
   return (
-    <div style={{ marginBottom: "28px" }}>
-      <h3>🎯 Your Interests</h3>
-      <p style={{ color: "#666", marginBottom: "12px" }}>
-        Select topics you are interested in
+    <div>
+      {/* HEADER */}
+      <p style={{ color: "#94a3b8", marginBottom: "14px", fontSize: "14px" }}>
+        Select topics you are interested in. This helps us personalize your
+        recommendations.
       </p>
 
       {/* TAGS */}
@@ -44,31 +45,59 @@ export default function StudentInterests({ studentId, onSaved }) {
           display: "flex",
           flexWrap: "wrap",
           gap: "10px",
-          marginBottom: "16px",
+          marginBottom: "18px",
         }}
       >
-        {tags.map((tag) => (
-          <span
-            key={tag.tag_id}
-            onClick={() => toggle(tag.tag_id)}
-            style={{
-              cursor: "pointer",
-              padding: "6px 14px",
-              borderRadius: "999px",
-              fontSize: "13px",
-              fontWeight: 500,
-              background: selected.includes(tag.tag_id) ? "#4f46e5" : "#f1f1f1",
-              color: selected.includes(tag.tag_id) ? "#fff" : "#333",
-              border: selected.includes(tag.tag_id) ? "none" : "1px solid #ddd",
-              transition: "all 0.15s ease",
-            }}
-          >
-            {tag.tag_name}
-          </span>
-        ))}
+        {tags.map((tag) => {
+          const active = selected.includes(tag.tag_id);
+          return (
+            <span
+              key={tag.tag_id}
+              onClick={() => toggle(tag.tag_id)}
+              style={{
+                cursor: "pointer",
+                padding: "6px 16px",
+                borderRadius: "999px",
+                fontSize: "13px",
+                fontWeight: 600,
+
+                background: active
+                  ? "rgba(79,70,229,0.25)"
+                  : "rgba(255,255,255,0.08)",
+
+                color: active ? "#c7d2fe" : "#e5e7eb",
+
+                border: active
+                  ? "1px solid rgba(79,70,229,0.45)"
+                  : "1px solid rgba(255,255,255,0.18)",
+
+                backdropFilter: "blur(8px)",
+                transition: "all 0.15s ease",
+              }}
+            >
+              {tag.tag_name}
+            </span>
+          );
+        })}
       </div>
 
-      <button onClick={save}>Save Interests</button>
+      {/* SAVE BUTTON */}
+      <button onClick={save} style={glassButtonStyle}>
+        💾 Save Interests
+      </button>
     </div>
   );
 }
+
+/* ================= STYLES ================= */
+
+const glassButtonStyle = {
+  padding: "10px 22px",
+  borderRadius: "12px",
+  background: "rgba(79,70,229,0.18)",
+  backdropFilter: "blur(10px)",
+  border: "1px solid rgba(79,70,229,0.45)",
+  color: "#c7d2fe",
+  fontWeight: 600,
+  cursor: "pointer",
+};
